@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Silas Laar | Neuroscience & Neuroimaging & AI Researcher & Neural Signal Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --ink: #1a1410;
+    --forest: #1e3a2f;
+    --sage: #4a7c59;
+    --gold: #c8a84b;
+    --gold-light: #e8d48a;
+    --rust: #8b4a2f;
+    --mist: #e8ede9;
+    --glass: rgba(245,240,232,0.85);
+    --shadow: 0 8px 40px rgba(26,20,16,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(200,168,75,0.25);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600; letter-spacing: .05em;
+    color: var(--forest); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+  .nav-links a {
+    font-size: .75rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none; transition: color .2s;
+    font-family: 'DM Mono', monospace;
+  }
+  .nav-links a:hover { color: var(--sage); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    padding: 6rem 5rem 3rem;
+    background: linear-gradient(135deg, #f5f0e8 60%, #dde8df 100%);
+    position: relative; overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,168,75,.15), transparent 70%);
+    pointer-events: none;
+  }
+  #hero::after {
+    content: 'SL';
+    position: absolute; bottom: -4rem; left: -2rem;
+    font-family: 'Cormorant Garamond', serif; font-size: 20rem; font-weight: 300;
+    color: rgba(30,58,47,.06); pointer-events: none; line-height: 1;
+  }
+  .hero-text { position: relative; z-index: 2; }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .15em;
+    color: var(--sage); background: rgba(74,124,89,.1);
+    padding: .35rem .85rem; border-radius: 2px; margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 300; line-height: 1.05; color: var(--forest); margin-bottom: 1rem;
+  }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-subtitle { font-size: 1rem; color: #5a5040; line-height: 1.75; max-width: 480px; margin-bottom: 2rem; }
+  .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .hero-links a {
+    font-family: 'DM Mono', monospace; font-size: .75rem;
+    color: var(--forest); text-decoration: none; letter-spacing: .08em;
+    border-bottom: 1px solid var(--gold); padding-bottom: 2px; transition: all .2s;
+  }
+  .hero-links a:hover { color: var(--rust); border-color: var(--rust); }
+
+  /* PROFILE PIC */
+  .profile-upload-area {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1.2rem;
+  }
+  .avatar-ring {
+    position: relative; width: 320px; height: 320px;
+    border-radius: 50%; cursor: pointer;
+    box-shadow: 0 0 0 4px var(--cream), 0 0 0 6px var(--gold), var(--shadow);
+    transition: box-shadow .3s;
+  }
+  .avatar-ring:hover { box-shadow: 0 0 0 4px var(--cream), 0 0 0 8px var(--sage), var(--shadow); }
+  .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+  .avatar-placeholder {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: linear-gradient(135deg, #dde8df, #c8d8ca);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: .5rem; color: var(--sage);
+  }
+  .avatar-placeholder span { font-family: 'DM Mono', monospace; font-size: .7rem; opacity: .7; text-transform: uppercase; letter-spacing: .1em; }
+  .avatar-overlay {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: rgba(30,58,47,.55); opacity: 0; transition: opacity .25s;
+    display: flex; align-items: center; justify-content: center; color: white;
+    font-family: 'DM Mono', monospace; font-size: .75rem; letter-spacing: .1em;
+    text-align: center; flex-direction: column; gap: .4rem;
+  }
+  .avatar-ring:hover .avatar-overlay { opacity: 1; }
+  #avatarInput { display: none; }
+  .upload-hint { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--sage); opacity: .7; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* SECTION BASE */
+  section { padding: 6rem 5rem; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--gold); text-transform: uppercase; margin-bottom: .6rem; }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300; color: var(--forest); margin-bottom: 3rem;
+    border-bottom: 2px solid var(--gold); padding-bottom: .75rem; display: inline-block;
+  }
+
+  /* ABOUT */
+  #about { background: var(--forest); color: var(--cream); }
+  #about .section-title { color: var(--gold-light); border-color: rgba(200,168,75,.4); }
+  #about .section-label { color: rgba(200,168,75,.7); }
+  .about-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; align-items: start; }
+  .about-text { font-size: 1.05rem; line-height: 1.85; color: rgba(245,240,232,.9); }
+  .contact-item { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.2rem; font-size: .85rem; color: rgba(245,240,232,.8); }
+  .contact-item a { color: var(--gold-light); text-decoration: none; word-break: break-all; }
+  .contact-item a:hover { text-decoration: underline; }
+  .contact-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(200,168,75,.15); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .9rem; }
+  .interests-list { margin-top: 2rem; }
+  .interests-list h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gold-light); margin-bottom: 1rem; font-weight: 400; }
+  .interest-tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--sage); background: rgba(74,124,89,.2); padding: .3rem .7rem; border-radius: 2px; margin: .25rem .25rem 0 0; letter-spacing: .08em; }
+
+  /* EDUCATION */
+  #education { background: var(--mist); }
+  .edu-card { background: white; border-radius: 12px; padding: 2.5rem; box-shadow: var(--shadow); border-left: 4px solid var(--gold); }
+  .edu-institution { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--forest); font-weight: 600; }
+  .edu-degree { font-size: 1rem; color: var(--ink); margin: .5rem 0; font-weight: 500; }
+  .edu-honor { display: inline-block; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: white; font-family: 'DM Mono', monospace; font-size: .7rem; letter-spacing: .1em; padding: .3rem .8rem; border-radius: 2px; margin: .5rem 0 1rem; font-weight: 500; }
+  .edu-meta { font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--sage); margin-bottom: 1rem; }
+  .edu-thesis { font-size: .9rem; color: #5a5040; margin-bottom: 1rem; font-style: italic; }
+  .edu-thesis strong { font-style: normal; color: var(--ink); }
+  .coursework { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .course-tag { font-family: 'DM Mono', monospace; font-size: .65rem; background: var(--mist); color: var(--forest); padding: .25rem .6rem; border-radius: 2px; border: 1px solid #d0dbd0; letter-spacing: .06em; }
+
+  /* RESEARCH */
+  #research { background: white; }
+  .research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .research-card { border: 1px solid #e0d8c8; border-radius: 10px; padding: 2rem; transition: all .3s; position: relative; overflow: hidden; }
+  .research-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--sage)); }
+  .research-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .research-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--forest); margin-bottom: .75rem; font-weight: 600; line-height: 1.3; }
+  .research-desc { font-size: .88rem; color: #5a5040; line-height: 1.75; margin-bottom: 1.25rem; }
+  .research-link { font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--sage); text-decoration: none; letter-spacing: .1em; text-transform: uppercase; border-bottom: 1px solid var(--sage); padding-bottom: 1px; transition: color .2s; }
+  .research-link:hover { color: var(--rust); border-color: var(--rust); }
+
+  /* CLINICAL */
+  #clinical { background: var(--forest); color: var(--cream); }
+  #clinical .section-title { color: var(--gold-light); border-color: rgba(200,168,75,.4); }
+  #clinical .section-label { color: rgba(200,168,75,.7); }
+  .timeline { position: relative; padding-left: 2.5rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: .5rem; bottom: .5rem; width: 2px; background: linear-gradient(180deg, var(--gold), transparent); }
+  .timeline-item { position: relative; margin-bottom: 2.5rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -2.95rem; top: .4rem; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 3px rgba(200,168,75,.3); }
+  .timeline-period { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--gold-light); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .4rem; }
+  .timeline-hospital { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--cream); font-weight: 600; }
+  .timeline-location { font-size: .8rem; color: rgba(245,240,232,.6); margin: .25rem 0 .75rem; }
+  .timeline-bullets { list-style: none; padding: 0; }
+  .timeline-bullets li { font-size: .875rem; color: rgba(245,240,232,.82); line-height: 1.75; padding-left: 1.25rem; position: relative; margin-bottom: .4rem; }
+  .timeline-bullets li::before { content: '·'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; line-height: 1.4; }
+
+  /* CONFERENCES */
+  #conferences { background: var(--mist); }
+  .conference-card { background: white; border-radius: 10px; padding: 2rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; }
+  .conf-date-badge { background: var(--forest); color: var(--gold-light); font-family: 'DM Mono', monospace; font-size: .65rem; letter-spacing: .1em; padding: .5rem .75rem; border-radius: 6px; text-align: center; white-space: nowrap; line-height: 1.6; text-transform: uppercase; }
+  .conf-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--forest); font-weight: 600; margin-bottom: .3rem; }
+  .conf-venue { font-family: 'DM Mono', monospace; font-size: .72rem; color: var(--sage); margin-bottom: .75rem; letter-spacing: .08em; }
+  .conf-desc { font-size: .875rem; color: #5a5040; line-height: 1.75; }
+
+  /* AWARDS */
+  #awards { background: white; }
+  .award-item { display: grid; grid-template-columns: 60px 1fr; gap: 1.5rem; align-items: start; padding: 1.75rem 0; border-bottom: 1px solid #ede8dc; }
+  .award-item:last-child { border-bottom: none; }
+  .award-icon { width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+  .award-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--forest); font-weight: 600; margin-bottom: .2rem; }
+  .award-year { font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--sage); margin-bottom: .5rem; letter-spacing: .1em; }
+  .award-desc { font-size: .875rem; color: #5a5040; line-height: 1.7; }
+
+  /* CERTIFICATIONS */
+  #certifications { background: var(--mist); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+  .cert-card { background: white; border-radius: 8px; padding: 1.25rem 1.5rem; border-left: 3px solid var(--sage); transition: all .25s; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .cert-card:hover { transform: translateX(4px); box-shadow: 4px 4px 16px rgba(0,0,0,.08); }
+  .cert-name { font-size: .88rem; color: var(--ink); font-weight: 500; line-height: 1.4; }
+  .cert-verify { font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--sage); text-decoration: none; white-space: nowrap; border-bottom: 1px solid var(--sage); transition: color .2s; flex-shrink: 0; }
+  .cert-verify:hover { color: var(--rust); }
+
+  /* SKILLS */
+  #skills { background: var(--forest); color: var(--cream); }
+  #skills .section-title { color: var(--gold-light); border-color: rgba(200,168,75,.4); }
+  #skills .section-label { color: rgba(200,168,75,.7); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; }
+  .skill-group-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold-light); margin-bottom: 1rem; border-bottom: 1px solid rgba(200,168,75,.3); padding-bottom: .4rem; font-weight: 400; letter-spacing: .05em; }
+  .skill-pill { display: inline-block; font-family: 'DM Mono', monospace; font-size: .7rem; color: rgba(245,240,232,.85); background: rgba(245,240,232,.08); border: 1px solid rgba(245,240,232,.15); padding: .3rem .7rem; border-radius: 3px; margin: .2rem .2rem 0 0; letter-spacing: .06em; transition: all .2s; }
+  .skill-pill:hover { background: rgba(200,168,75,.2); border-color: var(--gold); color: var(--gold-light); }
+
+  /* LANGUAGE */
+  #language { background: var(--cream); }
+  .lang-card { display: inline-flex; align-items: center; gap: 1.5rem; background: white; border-radius: 10px; padding: 1.5rem 2.5rem; box-shadow: var(--shadow); }
+  .lang-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--forest); }
+  .lang-level { font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--sage); letter-spacing: .12em; text-transform: uppercase; }
+  .lang-bars { display: flex; gap: 4px; }
+  .lang-bar { width: 28px; height: 6px; border-radius: 3px; background: var(--sage); }
+
+  /* LEADERSHIP */
+  #leadership { background: var(--mist); }
+  .leadership-item { background: white; border-radius: 10px; padding: 1.75rem 2rem; margin-bottom: 1.25rem; display: flex; align-items: flex-start; gap: 1.5rem; box-shadow: 0 2px 16px rgba(0,0,0,.05); transition: all .25s; }
+  .leadership-item:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .leadership-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); font-weight: 300; line-height: 1; flex-shrink: 0; min-width: 48px; }
+  .leadership-role { font-weight: 600; color: var(--forest); font-size: .95rem; margin-bottom: .3rem; }
+  .leadership-period { font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--sage); margin-bottom: .4rem; letter-spacing: .1em; }
+  .leadership-desc { font-size: .875rem; color: #5a5040; line-height: 1.65; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(245,240,232,.6); text-align: center; padding: 2.5rem; font-family: 'DM Mono', monospace; font-size: .75rem; letter-spacing: .1em; }
+  footer a { color: var(--gold-light); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    #hero { grid-template-columns: 1fr; padding: 5rem 2rem 3rem; }
+    .profile-upload-area { order: -1; }
+    .avatar-ring { width: 220px; height: 220px; }
+    section { padding: 4rem 2rem; }
+    .about-grid, .research-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .conference-card { grid-template-columns: 1fr; }
+    .award-item { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) { .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <a href="#hero" class="nav-logo">SL</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#clinical">Clinical</a></li>
+    <li><a href="#conferences">Events</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#leadership">Leadership</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-text">
+    <div class="hero-tag">Neurodegeneration &middot; AI Research &middot; Deep Learning</div>
+    <h1 class="hero-name">Silas<br/><em>Laar</em></h1>
+    <p class="hero-subtitle">
+      A highly motivated and goal-driven individual, passionate about neuroscience and neuroimaging, and eager to apply his academic training and skills to advance the understanding and diagnosis of neurological disorders.
+    </p>
+    <div class="hero-links">
+      <a href="mailto:silaslaar24@gmail.com">silaslaar24@gmail.com</a>
+      <a href="https://www.linkedin.com/in/laar-silas" target="_blank">LinkedIn</a>
+      <a href="https://github.com/Silas-Laar" target="_blank">GitHub</a>
+      <a href="tel:+233595106066">+233 595 106 066</a>
+    </div>
+  </div>
+
+<div class="profile-upload-area">
+  <div class="avatar-ring" id="avatarRing" title="Profile photo">
+    
+    <!-- Hidden placeholder (kept for design fallback, but not shown) -->
+    <div class="avatar-placeholder" id="avatarPlaceholder" style="display:none;">
+      <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span>Upload Photo</span>
+    </div>
+
+    <!-- Your actual profile image -->
+    <img id="avatarPreview" class="avatar-img" src="profile-pic.jpeg" alt="Silas Laar"/>
+
+    <!-- Optional overlay (you can keep or remove this) -->
+    <div class="avatar-overlay">
+      <span>Profile Photo</span>
+    </div>
+
+  </div>
+
+  <!-- Removed file input (not needed for GitHub Pages) -->
+  <!-- <input type="file" id="avatarInput" accept="image/*"/> -->
+
+  <p class="upload-hint">Profile photo</p>
+</div>
+</section>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 &mdash; Profile</div>
+  <h2 class="section-title">About Me</h2>
+  <div class="about-grid">
+    <div>
+      <p class="about-text">
+        A  highly motivated and goal-driven individual with a strong passion for neuroscience and neuroimaging, seeking to apply advanced computational and analytical skills to improve the understanding, diagnosis, and management of neurological disorders. Demonstrates a keen interest in bridging data-driven methods with clinical applications to support early detection and more effective intervention strategies in brain health. 
+      </p>
+      <div class="interests-list">
+        <h4>Research Interests</h4>
+        <span class="interest-tag">Neurodevelopment</span>
+        <span class="interest-tag">Cellular Pathology</span>
+        <span class="interest-tag">Neurodegeneration</span>
+        <span class="interest-tag">Precision Biomarkers for Brain Disorders</span>
+        <span class="interest-tag">Machine Learning and Deep Learning</span>
+        <span class="interest-tag">Neural Signal Analysis</span>
+        <span class="interest-tag">Neuroimaging</span>
+      </div>
+    </div>
+    <div>
+      <div class="contact-item">
+        <div class="contact-icon">&#9993;</div>
+        <a href="mailto:silaslaar24@gmail.com">silaslaar24@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">&#9742;</div>
+        <span>+233 595 106 066</span>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">in</div>
+        <a href="https://www.linkedin.com/in/laar-silas" target="_blank">linkedin.com/in/laar-silas</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">gh</div>
+        <a href="https://github.com/Silas-Laar" target="_blank">github.com/Silas-Laar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">02 &mdash; Academic Background</div>
+  <h2 class="section-title">Education &amp; Training</h2>
+  <div class="edu-card">
+    <div class="edu-institution">University for Development Studies</div>
+    <div class="edu-degree">Bachelor of Science in Health Information Management</div>
+    <div class="edu-honor">&#127891; Second-Class Upper Honours &middot; CGPA 4.40 / 5.00</div>
+    <div class="edu-meta">Tamale, Ghana</div>
+    <p class="edu-thesis"><strong>Thesis:</strong> Parkinson’s Disease Classification Using Explainable Artificial Intelligence.</p>
+    <p style="font-size:.85rem;color:#5a5040;margin-bottom:.75rem;font-weight:500;">Relevant Coursework:</p>
+    <div class="coursework">
+      <span class="course-tag">Pathology</span>
+      <span class="course-tag">Pharmacology</span>
+      <span class="course-tag">Biochemistry</span>
+      <span class="course-tag">Biostatistics</span>
+      <span class="course-tag">Microbiology</span>
+      <span class="course-tag">Human Anatomy &amp; Physiology</span>
+      <span class="course-tag">Research Methodology</span>
+      <span class="course-tag">Software Applications in Healthcare</span>
+      <span class="course-tag">Medical Law and Ethics</span>
+     <span class="course-tag">Entrepreneurship</span>
+     <span class="course-tag">Healthcare System and Organizations</span>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="section-label">03 &mdash; Work</div>
+  <h2 class="section-title">Research Experience &amp; Projects</h2>
+  <div class="research-grid">
+
+    <div class="research-card">
+      <div class="research-title">Parkinson's Disease Classification Using Explainable Artificial Intelligence</div>
+      <p class="research-desc">Developed a fine-tuned deep learning pipeline based on VGG16 to classify Parkinson's Disease from PET scans, enabling automated differentiation between PD and non-PD cases. The pretrained network was adapted through transfer learning, with selective layer freezing and hyperparameter optimization to improve feature extraction from high-dimensional neuroimaging data. Data preprocessing included normalization, resizing, and augmentation to enhance model robustness and generalization across varying scan conditions. To interpret the model’s I applied Grad-CAM and Class Activation Mapping. These methods were applied using both single-layer and multi-layer activation mapping to generate heatmaps highlighting the most influential brain regions contributing to classification decisions.</p>
+      <a href="https://github.com/Silas-Laar/Parkinson-Disease" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card">
+      <div class="research-title">Unsupervised Deep Learning for Parkinson's Voice Trajectory Modeling &amp; Subtype Discovery</div>
+      <p class="research-desc">Developed an unsupervised deep learning framework using a Variational Autoencoder on the Oxford Parkinson's Telemonitoring Dataset to learn latent representations of voice biomarkers. The model captured hidden disease progression patterns through latent space embedding, followed by clustering to identify distinct Parkinson’s phenotypes. Temporal trajectory analysis and visualization of latent dynamics provided interpretable insights into disease evolution over time from speech-derived features.</p>
+      <a href="https://github.com/Silas-Laar/PD-Telemonitoring" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card">
+      <div class="research-title">CNN Autoencoders for Anomaly Detection in Blood Smear Images</div>
+      <p class="research-desc">Developed an unsupervised anomaly detection framework combining a Convolutional Autoencoder with Kernel Density Estimation to identify parasitized cells from microscopy images. The model was trained solely on uninfected cell data, enabling anomaly detection through reconstruction error and latent-space probability density analysis. Performance was rigorously evaluated using ROC curves and AUC to quantify classification reliability and diagnostic accuracy. The model achieved an AUC of 1.</p>
+      <a href="https://github.com/Silas-Laar/Parasitized-Blood-Cells" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card">
+      <div class="research-title">Inter-Hemispheric Asymmetry and Functional Connectivity in Alzheimer's EEG</div>
+      <p class="research-desc">Investigated inter-hemispheric asymmetry and functional connectivity in a large-scale EEG dataset comprising 848,640 samples to identify disrupted brain network patterns associated with Alzheimer's Disease. Functional connectivity was quantified using Pearson correlation and Phase Locking Value (PLV). Statistical analysis and machine learning classification were applied to distinguish disease states, achieving<strong> 96% accuracy and an AUC of 0.99 </strong>.</p>
+      <a href="https://github.com/Silas-Laar/Hemispheric" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card">
+      <div class="research-title">Glioblastoma Tumor Segmentation Using Deep Learning</div>
+      <p class="research-desc">Developed and optimized a custom U-Net on the BraTS 2020 dataset for automated brain tumor segmentation from multimodal MRI scans. The model achieved 99.2% accuracy, an IoU of 0.82, and a Dice score of 0.61. The resulting precise tumor delineation supports earlier clinical decision-making, improved disease monitoring, and enhanced treatment planning workflows in neuro-oncology, complementing supportive care strategies such as rehabilitation and nutritional optimization.</p>
+      <a href="https://github.com/Silas-Laar/Glioblastoma" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card">
+      <div class="research-title">Prediction of Inhibitors of Alpha-Glucosidase Using Machine Learning</div>
+      <p class="research-desc"> I used machine learning to predict inhibitors and activators of the alpha-glucosidase enzyme as potential therapeutic targets for type 2 diabetes and pompe diseases. I collected data from the PubChem database on active and inactive compounds tested against the enzyme as training data and developed six algorithms comprising logistic regression, support vector machine, K-nearest neighbor, AdaBoost, random forest, and neural networks to classify compounds as active or inactive inhibitors and activators of the enzyme, which has the potential to accelerate the drug discovery process and lead to the development of more effective treatments of these diseases. Through this project, I gained expertise in data mining, machine learning, and project management.</p>
+      <a href="https://github.com/Silas-Laar/Alpha-Glucosidase" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+    <div class="research-card" style="grid-column:1/-1;max-width:680px;">
+      <div class="research-title">Unsupervised Anomaly Detection in EEG Signals Using LSTM Autoencoder</div>
+      <p class="research-desc"> Developed an LSTM Autoencoder trained exclusively on normal EEG signals to learn robust signal reconstruction patterns. Leveraged reconstruction error as an anomaly detection metric for identifying epileptic seizures in the Epileptic Seizure Recognition Dataset, achieving 94% accuracy and an ROC-AUC of 0.98. The approach enables effective detection of abnormal neural activity for early seizure identification. </p>
+      <a href="https://github.com/Silas-Laar/Seizure-Reconstruction" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+    <div class="research-card" style="grid-column:1/-1;max-width:680px;">
+      <div class="research-title"> Multi-Task ECG Joint Arrhythmia and Myocardial Infarction Detection </div>
+      <p class="research-desc">Developed a multi-task one-dimensional convolutional neural network (1D CNN) with a shared backbone that simultaneously performs five-class arrhythmia classification on the MIT-BIH dataset and binary myocardial infarction detection on the PTB dataset. The model leverages the integrated use of all four ECG signal channels to enhance generalization across heterogeneous cardiac signals and incorporates shared feature extraction with task-specific output layers to efficiently learn both rhythm abnormalities and ischemic patterns. Extensive preprocessing, including noise filtering, signal normalization, and segmentation, was applied to ensure robustness, while performance was evaluated using metrics such as accuracy, precision, recall, and ROC–AUC to validate clinical reliability.</p>
+      <a href="https://github.com/Silas-Laar/ECG-Myocardiac/tree/main" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+    <div class="research-card" style="grid-column:1/-1;max-width:680px;">
+      <div class="research-title"> LSTM-Based Deep Learning for Anomaly Detection in ECG Signals </div>
+      <p class="research-desc">Developed an LSTM Autoencoder for anomaly detection in electrocardiogram (ECG) time-series data. The model was trained exclusively on normal ECG patterns to learn accurate reconstruction behavior, with deviations quantified using reconstruction loss to identify abnormal signals. Evaluated on the ECG5000 Dataset, performance was assessed using ROC curves and AUC score to measure detection reliability and diagnostic effectiveness.</p>
+      <a href="https://github.com/Silas-Laar/ECG-Time-Series" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+    <div class="research-card" style="grid-column:1/-1;max-width:680px;">
+      <div class="research-title">EEG Signal Processing and Machine Learning Pipeline for Alzheimer’s Disease Classification</div>
+      <p class="research-desc">Developed an EEG signal processing and machine learning pipeline for classification of Alzheimer's Disease, integrating advanced preprocessing and feature engineering techniques. Applied Fast Fourier Transform (FFT) band-power analysis and Haar wavelet feature extraction, alongside Independent Component Analysis (ICA) for artifact removal and wavelet-based denoising. Incorporated Principal Component Analysis (PCA) and autoencoder-based dimensionality reduction to optimize feature representation. Performed multi-classifier benchmarking on a large-scale EEG dataset comprising 848,640 samples to evaluate discriminative performance across models. </p>
+      <a href="https://github.com/Silas-Laar/Alzheimer-s-PCA" class="research-link" target="_blank">View on GitHub &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLINICAL -->
+<section id="clinical">
+  <div class="section-label">04 &mdash; Experience</div>
+  <h2 class="section-title">Clinical Internship Experience</h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-period">June 2025 &ndash; August 2025</div>
+      <div class="timeline-hospital">War Memorial Hospital</div>
+      <div class="timeline-location">Navrongo, Ghana &middot; Clinical Internship</div>
+      <ul class="timeline-bullets">
+        <li>Analyzed clinical datasets to identify correlations between biomarkers, genetic profiles, and health outcomes, supporting data-driven strategies for early risk assessment and preventive lifestyle interventions.</li>
+        <li>Observed neurological assessments and routine examinations to deepen understanding of how timely non-pharmacological approaches can promote long-term wellbeing across different life stages.</li>
+        <li>Contributed to data-driven initiatives linking clinical records with genomic insights, advancing precision prevention and personalized health promotion for improved quality of life throughout adulthood and aging.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">September 2024 &ndash; November 2024</div>
+      <div class="timeline-hospital">Tamale Teaching Hospital</div>
+      <div class="timeline-location">Tamale, Ghana &middot; Clinical Internship</div>
+      <ul class="timeline-bullets">
+        <li>Assisted in documenting neurological patient histories and clinical findings, strengthening skills in holistic patient assessment to inform preventive care and lifestyle-based health strategies.</li>
+        <li>Maintained research databases focused on genetic and phenotypic profiling, contributing to evidence-based approaches for early detection and non-pharmacological management of chronic conditions.</li>
+        <li>Performed statistical analysis on patient datasets to identify predictors of treatment outcomes, supporting the development of targeted lifestyle interventions across the lifespan.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">September 2023 &ndash; October 2023</div>
+      <div class="timeline-hospital">Seventh Day Adventist Hospital</div>
+      <div class="timeline-location">Tamale, Ghana &middot; Clinical Internship</div>
+      <ul class="timeline-bullets">
+        <li>Educated patients and caregivers on neurological procedures, treatment plans, and follow-up care, emphasizing health literacy and practical lifestyle modifications for sustained wellbeing.</li>
+        <li>Mapped patient-derived clinical variables to experimental data, facilitating translational insights bridging clinical practice with preventive, non-pharmacological strategies for healthy aging.</li>
+        <li>Collaborated with clinicians to develop data-driven approaches for disease risk assessment, promoting proactive health promotion and personalized preventive care across diverse age groups.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-period">March 2023 &ndash; May 2023</div>
+      <div class="timeline-hospital">Baptist Medical Centre</div>
+      <div class="timeline-location">Nalerigu, Ghana &middot; Clinical Internship</div>
+      <ul class="timeline-bullets">
+        <li>Assisted in rehabilitation sessions by guiding patients through prescribed cognitive and motor exercises, demonstrating the impact of non-pharmacological interventions in restoring function and supporting lifelong physical and mental wellbeing.</li>
+        <li>Participated in ward rounds and case discussions, contributing to patient-centered reviews that integrate lifestyle factors and preventive strategies into clinical decision-making.</li>
+        <li>Developed practical understanding of neuroimaging techniques (MRI and CT) and their role in early diagnosis and monitoring, reinforcing the value of digital tools in enabling timely preventive care and healthy aging.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONFERENCES -->
+<section id="conferences">
+  <div class="section-label">05 &mdash; Learning &amp; Engagement</div>
+  <h2 class="section-title">Summer Schools &amp; Conferences</h2>
+
+  <div class="conference-card">
+    <div class="conf-date-badge">02 Mar<br/>2025</div>
+    <div>
+      <div class="conf-title">Advancing Computational Neuroscience through Collaborative Learning</div>
+      <div class="conf-venue">University of Ghana, Accra</div>
+      <p class="conf-desc">Participated in a collaborative learning event focused on advanced concepts in computational neuroscience. Explored topics such as neural coding, brain modeling, and data-driven approaches to understanding neural systems. This workshop deepened exposure to cutting-edge methodologies at the intersection of neuroscience and computation, enriching the approach to AI-driven health research, preventive neuroimaging, and early detection of neurological conditions across the lifespan.</p>
+    </div>
+  </div>
+
+  <div class="conference-card">
+    <div class="conf-date-badge">13&ndash;20 Feb<br/>2026</div>
+    <div>
+      <div class="conf-title">African International Conference on Quantum Computing and Simulation</div>
+      <div class="conf-venue">Kwame Nkrumah University of Science and Technology (KNUST)</div>
+      <p class="conf-desc">Gained hands-on experience in quantum computing, algorithm design, and real-world applications. Participated in workshops covering quantum simulation techniques and their emerging role in computational biology and drug discovery. Also gained exposure to research collaboration and policy development in Africa's emerging quantum ecosystem, positioning at the forefront of next-generation computing for health and life sciences applications.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="section-label">06 &mdash; Recognition</div>
+  <h2 class="section-title">Honors &amp; Awards</h2>
+
+  <div class="award-item">
+    <div class="award-icon">&#127885;</div>
+    <div>
+      <div class="award-title">Dean's Academic Excellence Award &mdash; Highest Grade in Research Methodology</div>
+      <div class="award-year">June 2025 &middot; School of Public Health</div>
+      <p class="award-desc">Awarded for achieving the highest grade (A+) in Research Methodology among a cohort of 84 students. This recognition reflects dedication to rigorous academic inquiry and the application of advanced statistical and research design principles in the health sciences context, demonstrating mastery of systematic approaches to generating and evaluating evidence.</p>
+    </div>
+  </div>
+
+  <div class="award-item">
+    <div class="award-icon">&#127885;</div>
+    <div>
+      <div class="award-title">Dean's Academic Excellence Award &mdash; Outstanding CGPA</div>
+      <div class="award-year">June 2025 &middot; School of Public Health</div>
+      <p class="award-desc">Awarded for excellent academic performance with a CGPA above 4.00/5.00 in the 2024/2025 academic year. This award recognizes consistent academic excellence across all coursework, reflecting unwavering commitment and intellectual rigor.</p>
+    </div>
+  </div>
+
+  <div class="award-item">
+    <div class="award-icon">&#127942;</div>
+    <div>
+      <div class="award-title">Best Undergraduate Research Project</div>
+      <div class="award-year">July 2026 &middot; Department of Epidemiology, Biostatistics and Disease Control</div>
+      <p class="award-desc">Awarded for an exceptional final-year undergraduate research thesis on the prediction of inhibitors of alpha-glucosidase using machine learning. This honor recognizes the originality, methodological rigor, and practical significance of the research, demonstrating the capacity to conduct impactful, independent scientific investigation at the undergraduate level with direct implications for drug discovery and metabolic disease prevention.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">07 &mdash; Professional Development</div>
+  <h2 class="section-title">Professional Certifications</h2>
+  <div class="certs-grid">
+    <div class="cert-card"><span class="cert-name">Precision Medicine</span><a href="https://coursera.org/verify/CTRLHZEWXMQY" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+<div class="cert-card"><span class="cert-name">Medical Image Processing</span><a href="https://coursera.org/verify/X274RKJDFJ41" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+ <div class="cert-card"><span class="cert-name">Advanced Machine Learning, Big data, and Deep Learning </span><a href="https://coursera.org/verify/T9QKMA5K3QIZ" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Data Science in Stratified Healthcare &amp; Precision Medicine</span><a href="https://coursera.org/verify/DJA1685PBCC2" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Advanced Neurobiology I</span><a href="https://coursera.org/verify/LBHNYT8Y7CBE" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Advanced Neurobiology II</span><a href="https://coursera.org/verify/S78GGIL9F167" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+
+    <div class="cert-card"><span class="cert-name">Introduction to the Biology of Cancer</span><a href="https://coursera.org/verify/CQYUEUACIB0O" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Molecular and Cell Biology</span><a href="https://coursera.org/verify/3JSBZWA0V32R" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Epigenetic Control of Gene Expression</span><a href="https://coursera.org/verify/U3GYVXA4EBGJ" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+<div class="cert-card"><span class="cert-name">Explainable Artificial Intelligence</span><a href="https://coursera.org/verify/specialization/GVAG0D818PYX" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Foundations of Healthcare Systems Engineering</span><a href="https://coursera.org/verify/TG6PKH5IWIUS" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Neuroscience and Neuroimaging </span><a href="https://coursera.org/verify/specialization/VH6UTK85IBKU" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Practical Genetic Algorithms in Python and MATLAB</span><a href="https://alison.com/verify/0139a0cb93" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+
+    <div class="cert-card"><span class="cert-name">Deep learning with PyTorch: Image Segmentation </span><a href="https://coursera.org/verify/3ZTM7I6HHYAY" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Python for Data Analysis</span><a href="https://www.mygreatlearning.com/certificate/PIQVMJGI?referrer_code=GLVOL4J13M7PC" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+    <div class="cert-card"><span class="cert-name">Introduction to Recombinant DNA Technology</span><a href="https://alison.com/user/learner-verification/26443672/5069" class="cert-verify" target="_blank">Verify &nearr;</a></div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">08 &mdash; Capabilities</div>
+  <h2 class="section-title">Digital &amp; Interpersonal Skills</h2>
+  <div class="skills-grid">
+    <div>
+      <div class="skill-group-title">Programming</div>
+      <span class="skill-pill">Python</span>
+      <span class="skill-pill">R</span>
+      <span class="skill-pill">MATLAB</span>
+      <span class="skill-pill">GitHub</span>
+      <span class="skill-pill">LaTeX</span>
+    </div>
+    <div>
+      <div class="skill-group-title">Machine &amp; Deep Learning</div>
+      <span class="skill-pill">TensorFlow</span>
+      <span class="skill-pill">Scikit-Learn</span>
+      <span class="skill-pill">PyTorch</span>
+      <span class="skill-pill">XGBoost</span>
+     <span class="skill-pill">Pandas</span>
+
+    </div>
+    <div>
+      <div class="skill-group-title">Image &amp; Signal Processing</div>
+      <span class="skill-pill">OpenCV</span>
+      <span class="skill-pill">Scikit-image</span>
+      <span class="skill-pill">SciPy</span>
+      <span class="skill-pill">Pillow</span>
+      <span class="skill-pill">NumPy</span>
+      <span class="skill-pill">PyWavelet</span>
+    </div>
+    <div>
+      <div class="skill-group-title">Research Skills</div>
+       <span class="skill-pill">Data Collection</span>
+      <span class="skill-pill">Literature Review</span>
+      <span class="skill-pill">Data Analysis</span>
+      <span class="skill-pill">Experimental Design</span>
+      <span class="skill-pill">Scientific Writing</span>
+    </div>
+    <div>
+      <div class="skill-group-title">Soft Skills</div>
+      <span class="skill-pill">Intellectual Curiosity</span>
+      <span class="skill-pill">Teamwork</span>
+      <span class="skill-pill">Rigor</span>
+      <span class="skill-pill">Effective Communication</span>
+      <span class="skill-pill">Active Listener</span>
+      <span class="skill-pill">Native English Speaker</span>
+    </div>
+  </div>
+</section>
+
+<!-- LANGUAGE -->
+<section id="language">
+  <div class="section-label">09 &mdash; Communication</div>
+  <h2 class="section-title">Language Skills</h2>
+  <div class="lang-card">
+    <div>
+      <div class="lang-name">English</div>
+      <div class="lang-level">Proficient &middot; Speaking &middot; Writing &middot; Reading</div>
+    </div>
+    <div class="lang-bars">
+      <div class="lang-bar"></div>
+      <div class="lang-bar"></div>
+      <div class="lang-bar"></div>
+      <div class="lang-bar"></div>
+      <div class="lang-bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-label">10 &mdash; Leadership</div>
+  <h2 class="section-title">Leadership &amp; Management</h2>
+
+  <div class="leadership-item">
+    <div class="leadership-num">01</div>
+    <div>
+      <div class="leadership-role">President &mdash; UDS Bimoba Student Union Association (BISU)</div>
+      <div class="leadership-period">January 2024 &ndash; March 2025</div>
+      <p class="leadership-desc">Led academic, cultural, and leadership initiatives for the student development and welfare of the association, organizing events and programs that fostered academic excellence, cultural pride, and peer support among Bimoba students at the University for Development Studies.</p>
+    </div>
+  </div>
+
+  <div class="leadership-item">
+    <div class="leadership-num">02</div>
+    <div>
+      <div class="leadership-role">General Assembly Speaker &mdash; Students Representative Council (SRC)</div>
+      <div class="leadership-period">February 2023 &ndash; February 2024</div>
+      <p class="leadership-desc">Facilitated legislative sessions and advocated for student welfare policies, providing democratic oversight of SRC decisions, ensuring transparent governance, and representing the collective voice of the student body in institutional decision-making processes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 Silas Laar &middot; Health Informatics &amp; AI Researcher &middot; Ghana</p>
+  <p style="margin-top:.5rem;">
+    <a href="mailto:silaslaar24@gmail.com">silaslaar24@gmail.com</a> &middot;
+    <a href="https://github.com/Silas-Laar" target="_blank">GitHub</a> &middot;
+    <a href="https://www.linkedin.com/in/laar-silas" target="_blank">LinkedIn</a>
+  </p>
+</footer>
+
+<script>
+(function() {
+  const ring = document.getElementById('avatarRing');
+  const input = document.getElementById('avatarInput');
+  const preview = document.getElementById('avatarPreview');
+  const placeholder = document.getElementById('avatarPlaceholder');
+
+  // Load saved photo on every page visit
+  try {
+    const saved = localStorage.getItem('silas_laar_avatar_v1');
+    if (saved) {
+      preview.src = saved;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+    }
+  } catch(e) {}
+
+  // Handle file upload
+  input.addEventListener('change', function() {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      preview.src = dataUrl;
+      preview.style.display = 'block';
+      placeholder.style.display = 'none';
+      try {
+        localStorage.setItem('silas_laar_avatar_v1', dataUrl);
+      } catch(err) {
+        console.warn('Storage full, photo shown but not persisted:', err);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Nav active highlight on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.style.color = (a.getAttribute('href') === '#' + entry.target.id) ? 'var(--sage)' : '';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => io.observe(s));
+})();
+</script>
+
+</body>
+</html>
